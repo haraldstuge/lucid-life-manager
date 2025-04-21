@@ -1,29 +1,41 @@
 
-import { getEventsForDate, mockEvents } from "@/data/mockData";
 import { CalendarEvent } from "@/types/event";
 import { cn } from "@/lib/utils";
 import { addDays, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, startOfMonth } from "date-fns";
+import { useEffect, useState } from "react";
+import { fetchCalendarEvents } from "@/lib/apiRoutes";
 
 interface CalendarViewProps {
   currentDate: Date;
 }
 
 const CalendarView = ({ currentDate }: CalendarViewProps) => {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetchCalendarEvents()
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError("Could not load calendar events");
+        setLoading(false);
+        console.error("[CalendarView] Fetch error:", err);
+      });
+  }, [currentDate]);
+
   const startDate = startOfMonth(currentDate);
   const endDate = endOfMonth(currentDate);
-  
-  // Get all days in the month
   const monthDays = eachDayOfInterval({ start: startDate, end: endDate });
-  
-  // Get the day of the week for the first day (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
   const startDayOfWeek = getDay(startDate);
-  
-  // Add placeholder days to align the first day correctly
   const placeholderDays = Array.from({ length: startDayOfWeek }, (_, i) => addDays(startDate, -startDayOfWeek + i));
-  
-  // Combine placeholder days and month days
   const calendarDays = [...placeholderDays, ...monthDays];
-  
+
   const getEventClassName = (category: CalendarEvent["category"]) => {
     switch (category) {
       case "work":
@@ -34,6 +46,33 @@ const CalendarView = ({ currentDate }: CalendarViewProps) => {
         return "calendar-event-other";
     }
   };
+
+  const getEventsForDate = (date: Date) => {
+    return events.filter(event => {
+      const eventDate = new Date(event.startTime);
+      // Compare only year, month, day for a match
+      return (
+        eventDate.getFullYear() === date.getFullYear() &&
+        eventDate.getMonth() === date.getMonth() &&
+        eventDate.getDate() === date.getDate()
+      );
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[300px]">
+        <span className="text-muted-foreground">Loading calendar events...</span>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] text-center">
+        <span className="text-muted-foreground mb-1">{error}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-card rounded-lg border shadow-sm overflow-hidden">
@@ -46,9 +85,9 @@ const CalendarView = ({ currentDate }: CalendarViewProps) => {
       </div>
       <div className="grid grid-cols-7 min-h-[600px] auto-rows-fr">
         {calendarDays.map((day, i) => {
-          const dayEvents = getEventsForDate(mockEvents, day);
+          const dayEvents = getEventsForDate(day);
           const isCurrentMonth = day.getMonth() === currentDate.getMonth();
-          
+
           return (
             <div
               key={i}

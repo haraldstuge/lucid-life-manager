@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { ArrowRight, CheckSquare, Circle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { apiRoutes } from "@/lib/apiRoutes";
+import { fetchTodos } from "@/lib/apiRoutes";
 
 const DashboardTasksWidget = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -18,18 +18,15 @@ const DashboardTasksWidget = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    fetch(apiRoutes.todos)
-      .then(async (res) => {
-        if (!res.ok) throw new Error("Failed to fetch tasks");
-        // Attempt both: array of Task or {data: Task[]}
-        const json = await res.json();
-        let data: Task[] = Array.isArray(json) ? json : json.data;
-        setTasks(Array.isArray(data) ? data : []);
+    fetchTodos()
+      .then((data) => {
+        setTasks(data);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
         setError("Could not load tasks");
         setLoading(false);
+        console.error("[DashboardTasksWidget] Fetch error:", err);
       });
   }, []);
 
@@ -84,7 +81,7 @@ const DashboardTasksWidget = () => {
               task.completed && "opacity-60"
             )}
           >
-            <Checkbox id={`task-${task.id}`} checked={task.completed} className="mt-1" />
+            <Checkbox id={`task-${task.id}`} checked={task.completed} className="mt-1" disabled />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <label
