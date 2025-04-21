@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { ArrowRight, Calendar, Circle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 const DashboardCalendarWidget = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -16,7 +17,7 @@ const DashboardCalendarWidget = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    fetch("http://localhost:8000/calendar")
+    fetch(apiRoutes.calendar)
       .then(async (res) => {
         if (!res.ok) throw new Error("Failed to fetch events");
         // Try both array and data wrapper

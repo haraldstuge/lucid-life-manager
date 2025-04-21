@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { ArrowRight, CheckSquare, Circle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { apiRoutes } from "@/lib/apiRoutes";
 
 const DashboardTasksWidget = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -17,7 +18,7 @@ const DashboardTasksWidget = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    fetch("http://localhost:8000/todos")
+    fetch(apiRoutes.todos)
       .then(async (res) => {
         if (!res.ok) throw new Error("Failed to fetch tasks");
         // Attempt both: array of Task or {data: Task[]}
