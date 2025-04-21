@@ -1,14 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import AppLayout from "@/components/layout/AppLayout";
+import DashboardCalendarWidget from "@/components/widgets/DashboardCalendarWidget";
+import DashboardChatWidget from "@/components/widgets/DashboardChatWidget";
+import DashboardStatsWidget from "@/components/widgets/DashboardStatsWidget";
+import DashboardTasksWidget from "@/components/widgets/DashboardTasksWidget";
+
+const Dashboard = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <AppLayout>
+      <div className="flex flex-col gap-6">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <DashboardStatsWidget />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DashboardTasksWidget />
+          <DashboardCalendarWidget />
+        </div>
+        <DashboardChatWidget />
       </div>
-    </div>
+    </AppLayout>
   );
 };
 
-export default Index;
+export default Dashboard;
