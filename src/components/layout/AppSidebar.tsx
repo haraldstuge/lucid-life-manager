@@ -54,7 +54,7 @@ const AppSidebar = () => {
             <SidebarMenuItem key={item.path}>
               <SidebarMenuButton
                 asChild
-                active={location.pathname === item.path}
+                isActive={location.pathname === item.path}
               >
                 <Link to={item.path} className="flex items-center gap-3 py-2">
                   <item.icon className="h-5 w-5" />
@@ -68,7 +68,7 @@ const AppSidebar = () => {
       <SidebarFooter className="border-t border-sidebar-border/50 p-4">
         <div className="flex items-center gap-2">
           <Button
-            variant="sidebar"
+            variant="outline"
             size="icon"
             className="rounded-full bg-sidebar-accent h-8 w-8"
           >

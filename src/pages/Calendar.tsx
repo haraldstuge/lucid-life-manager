@@ -35,7 +35,7 @@ const CalendarPage = () => {
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
-                  mode="month"
+                  mode="single"
                   selected={date}
                   onSelect={(date) => date && setDate(date)}
                   initialFocus
