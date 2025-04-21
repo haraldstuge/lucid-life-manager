@@ -1,11 +1,11 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { filterTasks, mockTasks } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
+import { fetchTodos } from "@/lib/apiRoutes";
 import { cn } from "@/lib/utils";
 import { Task } from "@/types/task";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskDialog from "./TaskDialog";
 
 interface TaskListProps {
@@ -14,10 +14,59 @@ interface TaskListProps {
 
 const TaskList = ({ filter }: TaskListProps) => {
   const { toast } = useToast();
-  const [tasks, setTasks] = useState<Task[]>(mockTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   
+  useEffect(() => {
+    console.log("[TaskList] Fetching tasks with filter:", filter);
+    setLoading(true);
+    setError(null);
+    
+    fetchTodos()
+      .then((data) => {
+        console.log("[TaskList] Tasks fetched successfully:", data);
+        setTasks(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("[TaskList] Error fetching tasks:", err);
+        setError("Could not load tasks");
+        setLoading(false);
+      });
+  }, [filter]);
+  
+  const filterTasks = (tasks: Task[], filter: string): Task[] => {
+    console.log("[TaskList] Filtering tasks with:", filter);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    switch (filter) {
+      case "today":
+        return tasks.filter(
+          task => 
+            task.dueDate && 
+            new Date(task.dueDate).setHours(0, 0, 0, 0) === today.getTime() &&
+            !task.completed
+        );
+      case "upcoming":
+        return tasks.filter(
+          task => 
+            task.dueDate && 
+            new Date(task.dueDate).setHours(0, 0, 0, 0) > today.getTime() &&
+            !task.completed
+        );
+      case "completed":
+        return tasks.filter(task => task.completed);
+      case "all":
+      default:
+        return tasks;
+    }
+  };
+  
   const filteredTasks = filterTasks(tasks, filter);
+  console.log("[TaskList] Filtered tasks count:", filteredTasks.length);
   
   const handleTaskComplete = (taskId: string, completed: boolean) => {
     setTasks(prevTasks => 
@@ -65,6 +114,24 @@ const TaskList = ({ filter }: TaskListProps) => {
         return "text-gray-500";
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-md">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent mb-2"></div>
+        <h3 className="font-medium text-muted-foreground">Loading tasks...</h3>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-md">
+        <h3 className="font-medium text-muted-foreground">Error</h3>
+        <p className="text-sm text-muted-foreground mt-1">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <>
