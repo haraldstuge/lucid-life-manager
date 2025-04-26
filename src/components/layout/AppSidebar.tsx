@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -17,8 +16,13 @@ const AppSidebar = () => {
   
   const menuItems = [
     {
-      title: "Dashboard",
+      title: "YouRai",
       path: "/",
+      icon: MessageSquare,
+    },
+    {
+      title: "Dashboard",
+      path: "/dashboard",
       icon: Home,
     },
     {
@@ -31,56 +35,53 @@ const AppSidebar = () => {
       path: "/tasks",
       icon: CheckSquare,
     },
-    {
-      title: "Chat",
-      path: "/chat",
-      icon: MessageSquare,
-    },
   ];
 
   return (
-    <Sidebar>
-      <SidebarHeader className="border-b border-sidebar-border/50 p-4">
-        <h2 className="font-semibold text-lg flex items-center gap-2">
-          <span className="bg-primary text-primary-foreground rounded-md w-8 h-8 flex items-center justify-center">
-            L
-          </span>
-          Lucid Assistant
-        </h2>
-      </SidebarHeader>
-      <SidebarContent className="px-2 py-4">
-        <SidebarMenu>
-          {menuItems.map((item) => (
-            <SidebarMenuItem key={item.path}>
-              <SidebarMenuButton
-                asChild
-                isActive={location.pathname === item.path}
-              >
-                <Link to={item.path} className="flex items-center gap-3 py-2">
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border/50 p-4">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full bg-sidebar-accent h-8 w-8"
-          >
-            <User className="h-4 w-4" />
-          </Button>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">User Name</span>
-            <span className="text-xs text-sidebar-foreground/70">Free Plan</span>
+    <div className="group/sidebar">
+      <Sidebar className="transition-all duration-300 translate-x-[-90%] group-hover/sidebar:translate-x-0">
+        <SidebarHeader className="border-b border-sidebar-border/50 p-4">
+          <h2 className="font-semibold text-lg flex items-center gap-2">
+            <span className="bg-primary text-primary-foreground rounded-md w-8 h-8 flex items-center justify-center">
+              L
+            </span>
+            Lucid Assistant
+          </h2>
+        </SidebarHeader>
+        <SidebarContent className="px-2 py-4">
+          <SidebarMenu>
+            {menuItems.map((item) => (
+              <SidebarMenuItem key={item.path}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === item.path}
+                >
+                  <Link to={item.path} className="flex items-center gap-3 py-2">
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarContent>
+        <SidebarFooter className="border-t border-sidebar-border/50 p-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full bg-sidebar-accent h-8 w-8"
+            >
+              <User className="h-4 w-4" />
+            </Button>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium">User Name</span>
+              <span className="text-xs text-sidebar-foreground/70">Free Plan</span>
+            </div>
           </div>
-        </div>
-      </SidebarFooter>
-    </Sidebar>
+        </SidebarFooter>
+      </Sidebar>
+    </div>
   );
 };
 
