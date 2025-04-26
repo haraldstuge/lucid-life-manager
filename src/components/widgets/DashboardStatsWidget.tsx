@@ -1,32 +1,58 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { mockEvents, mockTasks } from "@/data/mockData";
+import { fetchTodos, fetchCalendarEvents } from "@/lib/apiRoutes";
 import { CalendarCheck, CheckSquare, Clock } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Task } from "@/types/task";
+import { CalendarEvent } from "@/types/event";
 
 const DashboardStatsWidget = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log("[DashboardStatsWidget] Fetching data for stats...");
+    
+    Promise.all([
+      fetchTodos(),
+      fetchCalendarEvents()
+    ])
+      .then(([todosData, eventsData]) => {
+        console.log("[DashboardStatsWidget] Data fetched successfully");
+        setTasks(todosData);
+        setEvents(eventsData);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("[DashboardStatsWidget] Error fetching data:", err);
+        setLoading(false);
+      });
+  }, []);
+
   // Calculate statistics
-  const totalTasks = mockTasks.length;
-  const completedTasks = mockTasks.filter(task => task.completed).length;
-  const upcomingEvents = mockEvents.filter(
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(task => task.completed).length;
+  const upcomingEvents = events.filter(
     event => new Date(event.startTime) > new Date()
   ).length;
 
   const stats = [
     {
       title: "Total Tasks",
-      value: totalTasks,
+      value: loading ? "-" : totalTasks,
       icon: CheckSquare,
       color: "text-blue-500 bg-blue-50 dark:bg-blue-900/20",
     },
     {
       title: "Completed Tasks",
-      value: completedTasks,
+      value: loading ? "-" : completedTasks,
       icon: CalendarCheck,
       color: "text-green-500 bg-green-50 dark:bg-green-900/20",
     },
     {
       title: "Upcoming Events",
-      value: upcomingEvents,
+      value: loading ? "-" : upcomingEvents,
       icon: Clock,
       color: "text-purple-500 bg-purple-50 dark:bg-purple-900/20",
     },
