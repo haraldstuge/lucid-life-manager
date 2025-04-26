@@ -42,34 +42,44 @@ const DashboardStatsWidget = () => {
       title: "Total Tasks",
       value: loading ? "-" : totalTasks,
       icon: CheckSquare,
-      color: "text-blue-500 bg-blue-50 dark:bg-blue-900/20",
+      color: "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 text-blue-600 dark:text-blue-400",
+      shadow: "shadow-blue-500/20",
     },
     {
       title: "Completed Tasks",
       value: loading ? "-" : completedTasks,
       icon: CalendarCheck,
-      color: "text-green-500 bg-green-50 dark:bg-green-900/20",
+      color: "bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 text-green-600 dark:text-green-400",
+      shadow: "shadow-green-500/20",
     },
     {
       title: "Upcoming Events",
       value: loading ? "-" : upcomingEvents,
       icon: Clock,
-      color: "text-purple-500 bg-purple-50 dark:bg-purple-900/20",
+      color: "bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20 text-purple-600 dark:text-purple-400",
+      shadow: "shadow-purple-500/20",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {stats.map((stat, index) => (
-        <Card key={index} className="border-none shadow-sm hover:shadow transition-shadow">
+        <Card 
+          key={index} 
+          className={`border-none overflow-hidden transition-all duration-300 hover:scale-[1.02] ${stat.shadow}`}
+        >
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-full ${stat.color}`}>
+              <div className={`p-4 rounded-xl ${stat.color}`}>
                 <stat.icon className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
-                <h3 className="text-2xl font-bold">{stat.value}</h3>
+                <p className="text-sm font-medium text-muted-foreground/80">
+                  {stat.title}
+                </p>
+                <h3 className="text-3xl font-bold tracking-tight mt-1">
+                  {stat.value}
+                </h3>
               </div>
             </div>
           </CardContent>
