@@ -8,9 +8,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { Calendar, CheckSquare, Home, MessageSquare, User } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+} from "@/components/ui/sidebar"
+import { Calendar, CheckSquare, Home, MessageSquare, User } from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
 
 const AppSidebar = () => {
   const location = useLocation();
@@ -41,8 +41,8 @@ const AppSidebar = () => {
   return (
     <div className="fixed top-0 left-0 z-40 h-full">
       <div className="group/sidebar">
-        <Sidebar className="transition-transform duration-300 -translate-x-[calc(100%-16px)] group-hover/sidebar:translate-x-0">
-          <SidebarHeader className="border-b border-sidebar-border/50 p-4">
+        <Sidebar className="transition-transform duration-300 -translate-x-[calc(100%-16px)] group-hover/sidebar:translate-x-0 bg-background shadow-lg border-r">
+          <SidebarHeader className="border-b border-border p-4">
             <h2 className="font-semibold text-lg flex items-center gap-2">
               <span className="bg-primary text-primary-foreground rounded-md w-8 h-8 flex items-center justify-center">
                 L
@@ -67,18 +67,18 @@ const AppSidebar = () => {
               ))}
             </SidebarMenu>
           </SidebarContent>
-          <SidebarFooter className="border-t border-sidebar-border/50 p-4">
+          <SidebarFooter className="border-t border-border p-4">
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full bg-sidebar-accent h-8 w-8"
+                className="rounded-full bg-secondary h-8 w-8"
               >
                 <User className="h-4 w-4" />
               </Button>
               <div className="flex flex-col">
                 <span className="text-sm font-medium">User Name</span>
-                <span className="text-xs text-sidebar-foreground/70">Free Plan</span>
+                <span className="text-xs text-muted-foreground">Free Plan</span>
               </div>
             </div>
           </SidebarFooter>
@@ -89,3 +89,4 @@ const AppSidebar = () => {
 };
 
 export default AppSidebar;
+
