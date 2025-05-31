@@ -17,14 +17,14 @@ const AppSidebar = () => {
   
   const menuItems = [
     {
-      title: "YouRai",
+      title: "Dashboard",
       path: "/",
-      icon: MessageSquare,
+      icon: Home,
     },
     {
-      title: "Dashboard",
-      path: "/dashboard",
-      icon: Home,
+      title: "YouRai",
+      path: "/yourai",
+      icon: MessageSquare,
     },
     {
       title: "Calendar",
