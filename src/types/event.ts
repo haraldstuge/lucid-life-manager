@@ -3,8 +3,10 @@ export interface CalendarEvent {
   id: string;
   title: string;
   description?: string;
-  startTime: Date;
-  endTime: Date;
-  category: "work" | "personal" | "other";
-  createdAt: Date;
+  starts_at: Date;
+  ends_at: Date;
+  location?: string;
+  recurrence?: string;
+  created_at: Date;
+  updated_at: Date;
 }

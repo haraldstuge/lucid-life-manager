@@ -3,8 +3,10 @@ export interface Task {
   id: string;
   title: string;
   description?: string;
-  completed: boolean;
-  dueDate?: Date;
-  priority: "low" | "medium" | "high";
-  createdAt: Date;
+  due_date?: Date;
+  priority?: number;
+  status?: string;
+  parent_id?: string;
+  created_at: Date;
+  updated_at: Date;
 }
