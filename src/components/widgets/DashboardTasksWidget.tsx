@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +30,12 @@ const DashboardTasksWidget = () => {
   }, []);
 
   const getPriorityColor = (priority: Task["priority"]) => {
-    switch (priority) {
+    // Handle both string and number priority types
+    const priorityValue = typeof priority === "number" ? 
+      (priority >= 0.8 ? "high" : priority >= 0.4 ? "medium" : "low") :
+      priority;
+      
+    switch (priorityValue) {
       case "high":
         return "text-red-500";
       case "medium":
@@ -94,7 +98,9 @@ const DashboardTasksWidget = () => {
                   {task.title}
                 </label>
                 <span className={cn("text-xs font-medium", getPriorityColor(task.priority))}>
-                  {task.priority}
+                  {typeof task.priority === "number" ? 
+                    (task.priority >= 0.8 ? "high" : task.priority >= 0.4 ? "medium" : "low") :
+                    task.priority}
                 </span>
               </div>
               {task.description && (

@@ -9,4 +9,8 @@ export interface Task {
   parent_id?: string;
   created_at: Date;
   updated_at: Date;
+  
+  // Frontend computed properties
+  dueDate?: Date;
+  completed?: boolean;
 }

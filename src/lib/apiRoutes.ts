@@ -49,10 +49,15 @@ export async function fetchTodos() {
           id: item.id || String(idx),
           title: item.title ?? "(no title)",
           description: item.description,
+          due_date: item.due_date ? new Date(item.due_date) : undefined,
+          priority: item.priority,
+          status: item.status,
+          parent_id: item.parent_id,
+          created_at: item.created_at ? new Date(item.created_at) : new Date(),
+          updated_at: item.updated_at ? new Date(item.updated_at) : new Date(),
+          // Frontend computed properties
           completed: "status" in item ? mapCompleted(item.status) : false,
           dueDate: item.due_date ? new Date(item.due_date) : undefined,
-          priority: mapPriority(item.priority),
-          createdAt: item.created_at ? new Date(item.created_at) : new Date(),
         };
         console.log("[apiRoutes] Parsed task:", task);
         return task;
@@ -83,10 +88,16 @@ export async function fetchCalendarEvents() {
           id: item.id || String(idx),
           title: item.title ?? "(no title)",
           description: item.description,
+          starts_at: item.starts_at ? new Date(item.starts_at) : new Date(),
+          ends_at: item.ends_at ? new Date(item.ends_at) : new Date(),
+          location: item.location,
+          recurrence: item.recurrence,
+          created_at: item.created_at ? new Date(item.created_at) : new Date(),
+          updated_at: item.updated_at ? new Date(item.updated_at) : new Date(),
+          // Frontend computed properties
           startTime: item.start_time ? new Date(item.start_time) : new Date(),
           endTime: item.end_time ? new Date(item.end_time) : new Date(),
           category: item.category ?? "other",
-          createdAt: item.created_at ? new Date(item.created_at) : new Date(),
         };
         console.log("[apiRoutes] Parsed calendar event:", event);
         return event;

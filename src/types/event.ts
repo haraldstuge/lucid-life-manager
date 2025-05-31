@@ -9,4 +9,9 @@ export interface CalendarEvent {
   recurrence?: string;
   created_at: Date;
   updated_at: Date;
+  
+  // Frontend computed properties
+  startTime?: Date;
+  endTime?: Date;
+  category?: "work" | "personal" | "other";
 }

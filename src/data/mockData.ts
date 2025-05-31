@@ -37,7 +37,7 @@ export const getEventsForDate = (events: CalendarEvent[], date: Date): CalendarE
   const targetDate = startOfDay(date).getTime();
   
   return events.filter(event => {
-    const eventDate = startOfDay(new Date(event.startTime)).getTime();
+    const eventDate = startOfDay(new Date(event.startTime || event.starts_at)).getTime();
     return eventDate === targetDate;
   });
 };
