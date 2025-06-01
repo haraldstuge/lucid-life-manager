@@ -1,5 +1,5 @@
 
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { useState } from "react";
 import AppHeader from "./AppHeader";
 import AppSidebar from "./AppSidebar";
@@ -13,14 +13,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen w-full">
+      <div className="min-h-screen w-full flex">
         <AppSidebar />
-        <div className="w-full">
+        <SidebarInset className="flex-1">
           <AppHeader />
-          <main className="overflow-auto p-4 md:p-6">
+          <main className="flex-1 overflow-auto p-4 md:p-6">
             {children}
           </main>
-        </div>
+        </SidebarInset>
       </div>
     </SidebarProvider>
   );
